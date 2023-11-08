@@ -1,4 +1,4 @@
-package com.intuitcraft.businessprofilemanagement.dto;
+package com.intuitcraft.businessprofilemanagement.models;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.intuitcraft.businessprofilemanagement.model;
+package com.intuitcraft.businessprofilemanagement.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,13 +1,13 @@
 package com.intuitcraft.businessprofilemanagement.service.impl;
 
-import com.intuitcraft.businessprofilemanagement.dto.AddProductRequest;
-import com.intuitcraft.businessprofilemanagement.dto.ProductResponse;
-import com.intuitcraft.businessprofilemanagement.dto.ValidateProfileUpdateResponse;
+import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
+import com.intuitcraft.businessprofilemanagement.entities.Product;
 import com.intuitcraft.businessprofilemanagement.enums.RevisionStatus;
 import com.intuitcraft.businessprofilemanagement.exceptions.service.ProductNotFoundException;
 import com.intuitcraft.businessprofilemanagement.mappers.ProductMapper;
-import com.intuitcraft.businessprofilemanagement.model.BusinessProfile;
-import com.intuitcraft.businessprofilemanagement.model.Product;
+import com.intuitcraft.businessprofilemanagement.models.AddProductRequest;
+import com.intuitcraft.businessprofilemanagement.models.ProductResponse;
+import com.intuitcraft.businessprofilemanagement.models.ValidateProfileUpdateResponse;
 import com.intuitcraft.businessprofilemanagement.repository.ProductRepository;
 import com.intuitcraft.businessprofilemanagement.service.ProductService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;

@@ -1,18 +1,21 @@
 package com.intuitcraft.businessprofilemanagement.service.impl;
 
+import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
 import com.intuitcraft.businessprofilemanagement.cache.Cache;
-import com.intuitcraft.businessprofilemanagement.dto.BusinessProfileResponse;
-import com.intuitcraft.businessprofilemanagement.dto.CreateBusinessProfileRequest;
-import com.intuitcraft.businessprofilemanagement.dto.UpdateBusinessProfileRequest;
-import com.intuitcraft.businessprofilemanagement.dto.ValidateProfileUpdateResponse;
+import com.intuitcraft.businessprofilemanagement.cache.Locker;
+import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
 import com.intuitcraft.businessprofilemanagement.enums.RevisionStatus;
 import com.intuitcraft.businessprofilemanagement.exceptions.service.RevisionRejectedException;
 import com.intuitcraft.businessprofilemanagement.mappers.BusinessProfileMapper;
-import com.intuitcraft.businessprofilemanagement.model.BusinessProfile;
+import com.intuitcraft.businessprofilemanagement.models.BusinessProfileResponse;
+import com.intuitcraft.businessprofilemanagement.models.CreateBusinessProfileRequest;
+import com.intuitcraft.businessprofilemanagement.models.UpdateBusinessProfileRequest;
+import com.intuitcraft.businessprofilemanagement.models.ValidateProfileUpdateResponse;
 import com.intuitcraft.businessprofilemanagement.repository.BusinessProfileRepository;
 import com.intuitcraft.businessprofilemanagement.service.BusinessProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.intuitcraft.businessprofilemanagement.constants.Constants.BUSINESS_PROFILE;
+import static com.intuitcraft.businessprofilemanagement.constants.Constants.PROFILE_LOCK;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,8 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
     private final BusinessProfileRepository businessProfileRepository;
     private final ProductServiceImpl productService;
     private final Cache cache;
+    private final Locker locker;
+
 
     @Override
     public BusinessProfileResponse create(CreateBusinessProfileRequest request) {
@@ -45,32 +51,55 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
     }
 
     @Override
+    @Retryable(value = {ResourceInUseException.class}, maxAttempts = 3)
     public BusinessProfileResponse update(String id, UpdateBusinessProfileRequest request) {
-        BusinessProfile profile = getFromCache(id)
-                .orElse(businessProfileRepository.findById(id));
-        Set<String> subscribedProducts = profile.getSubscribedProducts();
-        BusinessProfile profileForUpdate = BusinessProfileMapper.mapToBusinessProfile(profile, request);
-        validateUpdate(profileForUpdate, subscribedProducts);
-        businessProfileRepository.update(id, profileForUpdate);
-        addToCache(profileForUpdate);
-        return BusinessProfileMapper.mapToBusinessProfileResponse(profile);
-
+        String profileLock = PROFILE_LOCK + "_" + id;
+        if (locker.hasLock(profileLock, 100,
+                TimeUnit.MILLISECONDS)) {
+            BusinessProfile profile = getFromCache(id)
+                    .orElse(businessProfileRepository.findById(id));
+            Set<String> subscribedProducts = profile.getSubscribedProducts();
+            BusinessProfile profileForUpdate = BusinessProfileMapper.mapToBusinessProfile(profile, request);
+            validateUpdate(profileForUpdate, subscribedProducts);
+            businessProfileRepository.update(id, profileForUpdate);
+            addToCache(profileForUpdate);
+            locker.releaseLock(profileLock);
+            return BusinessProfileMapper.mapToBusinessProfileResponse(profile);
+        } else {
+            throw getResourceInUseException(id);
+        }
     }
 
     @Override
     public Boolean subscribe(String id, String productId) {
-        BusinessProfile profile = businessProfileRepository.findById(id);
-        profile.subscribe(productId);
-        businessProfileRepository.update(id, profile);
-        return true;
+        String profileLock = PROFILE_LOCK + "_" + id;
+        if (locker.hasLock(profileLock, 100,
+                TimeUnit.MILLISECONDS)) {
+            BusinessProfile profile = businessProfileRepository.findById(id);
+            profile.subscribe(productId);
+            businessProfileRepository.update(id, profile);
+            addToCache(profile);
+            locker.releaseLock(profileLock);
+            return true;
+        } else {
+            throw getResourceInUseException(id);
+        }
     }
 
     @Override
     public Boolean unsubscribe(String id, String productId) {
-        BusinessProfile profile = businessProfileRepository.findById(id);
-        profile.unsubscribe(productId);
-        businessProfileRepository.update(id, profile);
-        return true;
+        String profileLock = PROFILE_LOCK + "_" + id;
+        if (locker.hasLock(profileLock, 100,
+                TimeUnit.MILLISECONDS)) {
+            BusinessProfile profile = businessProfileRepository.findById(id);
+            profile.unsubscribe(productId);
+            businessProfileRepository.update(id, profile);
+            addToCache(profile);
+            locker.releaseLock(profileLock);
+            return true;
+        } else {
+            throw getResourceInUseException(id);
+        }
     }
 
     private void validateUpdate(BusinessProfile profileForUpdate,
@@ -97,8 +126,7 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
         return cache.get(cacheKey, BusinessProfile.class);
     }
 
-    private void deleteFromCache(String profileId) {
-        String cacheKey = BUSINESS_PROFILE + "_" + profileId;
-        cache.delete(cacheKey);
+    private ResourceInUseException getResourceInUseException(String id) {
+        return new ResourceInUseException("Business Profile -" + id + "is currently in use");
     }
 }

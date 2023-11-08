@@ -1,4 +1,4 @@
-package com.intuitcraft.businessprofilemanagement.model;
+package com.intuitcraft.businessprofilemanagement.entities;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;

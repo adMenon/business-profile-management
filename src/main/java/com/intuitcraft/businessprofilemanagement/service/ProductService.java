@@ -1,9 +1,9 @@
 package com.intuitcraft.businessprofilemanagement.service;
 
-import com.intuitcraft.businessprofilemanagement.dto.AddProductRequest;
-import com.intuitcraft.businessprofilemanagement.dto.ProductResponse;
-import com.intuitcraft.businessprofilemanagement.dto.ValidateProfileUpdateResponse;
-import com.intuitcraft.businessprofilemanagement.model.BusinessProfile;
+import com.intuitcraft.businessprofilemanagement.models.AddProductRequest;
+import com.intuitcraft.businessprofilemanagement.models.ProductResponse;
+import com.intuitcraft.businessprofilemanagement.models.ValidateProfileUpdateResponse;
+import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
 
 import java.util.List;
 import java.util.Set;

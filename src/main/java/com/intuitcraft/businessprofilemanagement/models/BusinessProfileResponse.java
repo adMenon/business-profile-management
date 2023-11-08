@@ -1,4 +1,4 @@
-package com.intuitcraft.businessprofilemanagement.dto;
+package com.intuitcraft.businessprofilemanagement.models;
 
 import com.intuitcraft.businessprofilemanagement.enums.TaxIdentifier;
 import lombok.Builder;
@@ -10,9 +10,10 @@ import java.util.Set;
 @Builder
 public class BusinessProfileResponse {
     private String id;
-    private String name;
-    private String company;
-    private String address;
+    private String legalName;
+    private String companyName;
+    private String legalAddress;
+    private String businessAddress;
     private String email;
     private String website;
     private Set<TaxIdentifier> taxIdentifiers;

@@ -1,8 +1,8 @@
 package com.intuitcraft.businessprofilemanagement.mappers;
 
-import com.intuitcraft.businessprofilemanagement.dto.AddProductRequest;
-import com.intuitcraft.businessprofilemanagement.dto.ProductResponse;
-import com.intuitcraft.businessprofilemanagement.model.Product;
+import com.intuitcraft.businessprofilemanagement.entities.Product;
+import com.intuitcraft.businessprofilemanagement.models.AddProductRequest;
+import com.intuitcraft.businessprofilemanagement.models.ProductResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

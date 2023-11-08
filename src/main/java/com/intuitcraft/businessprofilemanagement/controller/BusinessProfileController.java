@@ -1,7 +1,7 @@
 package com.intuitcraft.businessprofilemanagement.controller;
 
-import com.intuitcraft.businessprofilemanagement.dto.CreateBusinessProfileRequest;
-import com.intuitcraft.businessprofilemanagement.dto.UpdateBusinessProfileRequest;
+import com.intuitcraft.businessprofilemanagement.models.CreateBusinessProfileRequest;
+import com.intuitcraft.businessprofilemanagement.models.UpdateBusinessProfileRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;

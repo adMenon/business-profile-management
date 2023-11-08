@@ -1,52 +1,61 @@
 package com.intuitcraft.businessprofilemanagement.mappers;
 
-import com.intuitcraft.businessprofilemanagement.dto.BusinessProfileResponse;
-import com.intuitcraft.businessprofilemanagement.dto.CreateBusinessProfileRequest;
-import com.intuitcraft.businessprofilemanagement.dto.UpdateBusinessProfileRequest;
-import com.intuitcraft.businessprofilemanagement.model.BusinessProfile;
+import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
+import com.intuitcraft.businessprofilemanagement.models.BusinessProfileResponse;
+import com.intuitcraft.businessprofilemanagement.models.CreateBusinessProfileRequest;
+import com.intuitcraft.businessprofilemanagement.models.UpdateBusinessProfileRequest;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 @UtilityClass
 public class BusinessProfileMapper {
     public static BusinessProfileResponse mapToBusinessProfileResponse(BusinessProfile businessProfile) {
         return BusinessProfileResponse.builder()
-                .address(businessProfile.getAddress())
+                .legalAddress(businessProfile.getLegalAddress().getAddressString())
+                .businessAddress(businessProfile.getBusinessAddress().getAddressString())
                 .id(businessProfile.getId())
                 .website(businessProfile.getWebsite())
-                .name(businessProfile.getName())
-                .company(businessProfile.getCompany())
+                .legalName(businessProfile.getLegalName())
+                .companyName(businessProfile.getCompanyName())
                 .taxIdentifiers(businessProfile.getTaxIdentifiers())
                 .email(businessProfile.getEmail())
-                .subscribedBusiness(businessProfile.getSubscribedProducts())
+                .subscribedBusiness(Optional.ofNullable(businessProfile.getSubscribedProducts())
+                        .orElse(Set.of()))
                 .build();
     }
 
+
     public static BusinessProfile mapToBusinessProfile(CreateBusinessProfileRequest request) {
         return BusinessProfile.builder()
-                .address(request.getAddress())
+                .legalAddress(request.getLegalAddress())
+                .businessAddress(request.getBusinessAddress())
                 .email(request.getEmail())
-                .name(request.getName())
+                .legalName(request.getLegalName())
                 .website(request.getWebsite())
                 .taxIdentifiers(request.getTaxIdentifiers())
-                .company(request.getCompany())
+                .companyName(request.getCompanyName())
                 .build();
     }
 
     public static BusinessProfile mapToBusinessProfile(BusinessProfile profile,
                                                        UpdateBusinessProfileRequest request) {
-        if (Objects.nonNull(request.getAddress())) {
-            profile.setAddress(request.getAddress());
+        if (Objects.nonNull(request.getLegalAddress())) {
+            profile.setLegalAddress(request.getLegalAddress());
         }
-        if (Objects.nonNull(request.getName())) {
-            profile.setName(request.getName());
+        if (Objects.nonNull(request.getBusinessAddress())) {
+            profile.setBusinessAddress(request.getBusinessAddress());
+        }
+        if (Objects.nonNull(request.getCompanyName())) {
+            profile.setCompanyName(request.getCompanyName());
+        }
+        if (Objects.nonNull(request.getLegalName())) {
+            profile.setLegalName(request.getLegalName());
         }
         if (Objects.nonNull(request.getWebsite())) {
             profile.setWebsite(request.getWebsite());
-        }
-        if (Objects.nonNull(request.getCompany())) {
-            profile.setCompany(request.getCompany());
         }
         if (Objects.nonNull(request.getEmail())) {
             profile.setEmail(request.getEmail());

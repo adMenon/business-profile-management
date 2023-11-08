@@ -24,7 +24,7 @@ public class DynamoDbConfig {
     @Value("${aws.dynamodb.endpoint}")
     private String awsDynamoDBEndPoint;
 
-    @Value("${aws.region:}")
+    @Value("${aws.region}")
     private String awsRegion;
 
     @Bean

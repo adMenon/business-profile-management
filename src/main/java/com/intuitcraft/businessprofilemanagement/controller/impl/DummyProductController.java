@@ -1,8 +1,8 @@
 package com.intuitcraft.businessprofilemanagement.controller.impl;
 
 import com.intuitcraft.businessprofilemanagement.controller.ExternalProductController;
-import com.intuitcraft.businessprofilemanagement.dto.ValidateProfileUpdateResponse;
 import com.intuitcraft.businessprofilemanagement.enums.RevisionStatus;
+import com.intuitcraft.businessprofilemanagement.models.ValidateProfileUpdateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

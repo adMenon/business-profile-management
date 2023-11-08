@@ -1,6 +1,6 @@
 package com.intuitcraft.businessprofilemanagement.controller;
 
-import com.intuitcraft.businessprofilemanagement.dto.AddProductRequest;
+import com.intuitcraft.businessprofilemanagement.models.AddProductRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;

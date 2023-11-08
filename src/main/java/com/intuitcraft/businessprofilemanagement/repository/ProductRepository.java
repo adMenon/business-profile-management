@@ -5,7 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
-import com.intuitcraft.businessprofilemanagement.model.Product;
+import com.intuitcraft.businessprofilemanagement.entities.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

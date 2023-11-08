@@ -1,6 +1,6 @@
 package com.intuitcraft.businessprofilemanagement.fallback;
 
-import com.intuitcraft.businessprofilemanagement.dto.GenericResponse;
+import com.intuitcraft.businessprofilemanagement.models.GenericResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
