@@ -12,4 +12,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamoDBDocument
 public class BusinessAddress extends Address {
+    public BusinessAddress(Address address) {
+        super(address.getLine1(), address.getLine2(), address.getCity(),
+                address.getState(), address.getCountry(), address.getZip());
+    }
 }

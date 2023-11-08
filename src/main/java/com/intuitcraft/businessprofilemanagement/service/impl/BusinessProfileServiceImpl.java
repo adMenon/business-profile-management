@@ -1,6 +1,7 @@
 package com.intuitcraft.businessprofilemanagement.service.impl;
 
 import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
+import com.amazonaws.util.CollectionUtils;
 import com.intuitcraft.businessprofilemanagement.cache.Cache;
 import com.intuitcraft.businessprofilemanagement.cache.Locker;
 import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
@@ -36,11 +37,10 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
 
 
     @Override
-    public BusinessProfileResponse create(CreateBusinessProfileRequest request) {
+    public String create(CreateBusinessProfileRequest request) {
         BusinessProfile profile = BusinessProfileMapper.mapToBusinessProfile(request);
         businessProfileRepository.save(profile);
-        addToCache(profile);
-        return BusinessProfileMapper.mapToBusinessProfileResponse(profile);
+        return profile.getId();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
 
     @Override
     @Retryable(value = {ResourceInUseException.class}, maxAttempts = 3)
-    public BusinessProfileResponse update(String id, UpdateBusinessProfileRequest request) {
+    public Boolean update(String id, UpdateBusinessProfileRequest request) {
         String profileLock = PROFILE_LOCK + "_" + id;
         if (locker.hasLock(profileLock, 100,
                 TimeUnit.MILLISECONDS)) {
@@ -60,11 +60,13 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
                     .orElse(businessProfileRepository.findById(id));
             Set<String> subscribedProducts = profile.getSubscribedProducts();
             BusinessProfile profileForUpdate = BusinessProfileMapper.mapToBusinessProfile(profile, request);
-            validateUpdate(profileForUpdate, subscribedProducts);
+            if (!CollectionUtils.isNullOrEmpty(subscribedProducts)) {
+                validateUpdate(profileForUpdate, subscribedProducts);
+            }
             businessProfileRepository.update(id, profileForUpdate);
             addToCache(profileForUpdate);
             locker.releaseLock(profileLock);
-            return BusinessProfileMapper.mapToBusinessProfileResponse(profile);
+            return true;
         } else {
             throw getResourceInUseException(id);
         }
@@ -75,7 +77,8 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
         String profileLock = PROFILE_LOCK + "_" + id;
         if (locker.hasLock(profileLock, 100,
                 TimeUnit.MILLISECONDS)) {
-            BusinessProfile profile = businessProfileRepository.findById(id);
+            BusinessProfile profile = getFromCache(id)
+                    .orElse(businessProfileRepository.findById(id));
             profile.subscribe(productId);
             businessProfileRepository.update(id, profile);
             addToCache(profile);
@@ -91,7 +94,8 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
         String profileLock = PROFILE_LOCK + "_" + id;
         if (locker.hasLock(profileLock, 100,
                 TimeUnit.MILLISECONDS)) {
-            BusinessProfile profile = businessProfileRepository.findById(id);
+            BusinessProfile profile = getFromCache(id)
+                    .orElse(businessProfileRepository.findById(id));
             profile.unsubscribe(productId);
             businessProfileRepository.update(id, profile);
             addToCache(profile);

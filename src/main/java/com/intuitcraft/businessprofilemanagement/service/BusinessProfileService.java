@@ -5,11 +5,11 @@ import com.intuitcraft.businessprofilemanagement.models.CreateBusinessProfileReq
 import com.intuitcraft.businessprofilemanagement.models.UpdateBusinessProfileRequest;
 
 public interface BusinessProfileService {
-    BusinessProfileResponse create(CreateBusinessProfileRequest request);
+    String create(CreateBusinessProfileRequest request);
 
     BusinessProfileResponse findById(String id);
 
-    BusinessProfileResponse update(String id, UpdateBusinessProfileRequest request);
+    Boolean update(String id, UpdateBusinessProfileRequest request);
 
     Boolean subscribe(String id, String productId);
 

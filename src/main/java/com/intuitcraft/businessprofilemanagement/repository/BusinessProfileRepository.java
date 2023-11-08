@@ -2,14 +2,13 @@ package com.intuitcraft.businessprofilemanagement.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import static com.intuitcraft.businessprofilemanagement.constants.Constants.BUSINESS_PROFILE_PK;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,22 +24,13 @@ public class BusinessProfileRepository {
         return dynamoDBMapper.load(BusinessProfile.class, id);
     }
 
-    public List<BusinessProfile> findAll() {
-        return dynamoDBMapper.scan(BusinessProfile.class, new DynamoDBScanExpression());
-    }
-
     public String update(String id, BusinessProfile profile) {
         dynamoDBMapper.save(profile,
                 new DynamoDBSaveExpression()
-                        .withExpectedEntry("profile_id",
+                        .withExpectedEntry(BUSINESS_PROFILE_PK,
                                 new ExpectedAttributeValue(
                                         new AttributeValue().withS(id)
                                 )));
         return id;
-    }
-
-    public void delete(String id) {
-        BusinessProfile profile = dynamoDBMapper.load(BusinessProfile.class, id);
-        dynamoDBMapper.delete(profile);
     }
 }
