@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.intuitcraft.businessprofilemanagement.constants.Constants.BUSINESS_PROFILE;
 import static com.intuitcraft.businessprofilemanagement.constants.Constants.PROFILE_LOCK;
@@ -104,6 +105,12 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
         } else {
             throw getResourceInUseException(id);
         }
+    }
+
+    @Override
+    public List<BusinessProfileResponse> findAll() {
+        return businessProfileRepository.findAll().stream()
+                .map(BusinessProfileMapper::mapToBusinessProfileResponse).collect(Collectors.toList());
     }
 
     private void validateUpdate(BusinessProfile profileForUpdate,

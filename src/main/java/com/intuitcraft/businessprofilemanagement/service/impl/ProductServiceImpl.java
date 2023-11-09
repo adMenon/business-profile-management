@@ -10,7 +10,6 @@ import com.intuitcraft.businessprofilemanagement.models.ProductResponse;
 import com.intuitcraft.businessprofilemanagement.models.ValidateProfileUpdateResponse;
 import com.intuitcraft.businessprofilemanagement.repository.ProductRepository;
 import com.intuitcraft.businessprofilemanagement.service.ProductService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -71,7 +70,15 @@ public class ProductServiceImpl implements ProductService {
         return true;
     }
 
-    @CircuitBreaker(name = "profileRevisionVerification", fallbackMethod = "fallback")
+    @Override
+    public List<ProductResponse> getAll() {
+        return productRepository.findAll().stream().map(product -> ProductResponse.builder()
+                .productId(product.getId())
+                .url(product.getUrl())
+                .build()).toList();
+    }
+
+    //@CircuitBreaker(name = "CircuitBreakerService")
     private ValidateProfileUpdateResponse invokeValidateCall(String url,
                                                              BusinessProfile profileForUpdate) {
         return restTemplate.postForObject(url, profileForUpdate,

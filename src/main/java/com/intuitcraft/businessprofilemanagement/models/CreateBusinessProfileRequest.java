@@ -20,10 +20,10 @@ public class CreateBusinessProfileRequest {
     private String companyName;
     @NotNull
     @Valid
-    private LegalAddress legalAddress;
+    private AddressRequest legalAddress;
     @NotNull
     @Valid
-    private BusinessAddress businessAddress;
+    private AddressRequest businessAddress;
     @Email
     private String email;
     @URL

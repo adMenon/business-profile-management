@@ -4,6 +4,8 @@ import com.intuitcraft.businessprofilemanagement.models.BusinessProfileResponse;
 import com.intuitcraft.businessprofilemanagement.models.CreateBusinessProfileRequest;
 import com.intuitcraft.businessprofilemanagement.models.UpdateBusinessProfileRequest;
 
+import java.util.List;
+
 public interface BusinessProfileService {
     String create(CreateBusinessProfileRequest request);
 
@@ -14,4 +16,6 @@ public interface BusinessProfileService {
     Boolean subscribe(String id, String productId);
 
     Boolean unsubscribe(String id, String productId);
+
+    List<BusinessProfileResponse> findAll();
 }

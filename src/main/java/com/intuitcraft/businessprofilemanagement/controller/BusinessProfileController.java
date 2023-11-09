@@ -22,6 +22,9 @@ public interface BusinessProfileController {
     @GetMapping("/{id}")
     ResponseEntity<?> findById(@PathVariable String id);
 
+    @GetMapping
+    ResponseEntity<?> findAll();
+
     @PostMapping("/{id}/subscribe/{productId}")
     ResponseEntity<?> subscribe(@PathVariable String id, @PathVariable String productId);
 

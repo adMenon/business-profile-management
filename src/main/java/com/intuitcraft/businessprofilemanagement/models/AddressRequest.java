@@ -1,6 +1,6 @@
 package com.intuitcraft.businessprofilemanagement.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,18 +10,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamoDBDocument
-public class Address {
+public class AddressRequest {
+    @NotBlank
     private String line1;
+    @NotBlank
     private String line2;
+    @NotBlank
     private String city;
+    @NotBlank
     private String state;
+    @NotBlank
     private String country;
+    @NotBlank
     private String zip;
-
-    @Override
-    public String toString() {
-        return line1 + ", " + line2 + ", " + city + ", " + state + ", " + country + "-" + zip;
-    }
-
 }

@@ -33,6 +33,12 @@ public class BusinessProfileControllerImpl implements BusinessProfileController 
         return GenericResponse.ok(businessProfileService.findById(id));
     }
 
+    //Make this paginated
+    @Override
+    public ResponseEntity<?> findAll() {
+        return GenericResponse.ok(businessProfileService.findAll());
+    }
+
     @Override
     public ResponseEntity<?> subscribe(@NotBlank String id, @NotBlank String productId) {
         return GenericResponse.ok(businessProfileService.subscribe(id, productId));

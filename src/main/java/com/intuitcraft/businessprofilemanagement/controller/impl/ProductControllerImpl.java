@@ -25,4 +25,9 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<?> remove(@NotBlank String productId) {
         return GenericResponse.ok(productService.remove(productId));
     }
+
+    @Override
+    public ResponseEntity<?> getAll() {
+        return GenericResponse.ok(productService.getAll());
+    }
 }

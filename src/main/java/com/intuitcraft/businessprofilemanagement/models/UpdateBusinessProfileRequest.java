@@ -1,6 +1,7 @@
 package com.intuitcraft.businessprofilemanagement.models;
 
 import com.intuitcraft.businessprofilemanagement.enums.TaxIdentifier;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,8 +18,10 @@ import java.util.Set;
 public class UpdateBusinessProfileRequest {
     private String legalName;
     private String companyName;
-    private LegalAddress legalAddress;
-    private BusinessAddress businessAddress;
+    @Valid
+    private AddressRequest legalAddress;
+    @Valid
+    private AddressRequest businessAddress;
     @Email
     private String email;
     @URL

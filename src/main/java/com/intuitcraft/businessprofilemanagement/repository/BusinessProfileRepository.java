@@ -2,11 +2,14 @@ package com.intuitcraft.businessprofilemanagement.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.intuitcraft.businessprofilemanagement.entities.BusinessProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.intuitcraft.businessprofilemanagement.constants.Constants.BUSINESS_PROFILE_PK;
 
@@ -33,4 +36,9 @@ public class BusinessProfileRepository {
                                 )));
         return id;
     }
+
+    public List<BusinessProfile> findAll() {
+        return dynamoDBMapper.scan(BusinessProfile.class, new DynamoDBScanExpression());
+    }
+
 }

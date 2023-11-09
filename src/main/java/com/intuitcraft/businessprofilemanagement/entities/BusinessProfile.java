@@ -8,8 +8,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTyped;
 import com.amazonaws.util.CollectionUtils;
 import com.intuitcraft.businessprofilemanagement.enums.TaxIdentifier;
-import com.intuitcraft.businessprofilemanagement.models.BusinessAddress;
-import com.intuitcraft.businessprofilemanagement.models.LegalAddress;
+import com.intuitcraft.businessprofilemanagement.models.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,10 +39,10 @@ public class BusinessProfile extends BaseEntity {
     private String companyName;
 
     @DynamoDBAttribute
-    private LegalAddress legalAddress;
+    private Address legalAddress;
 
     @DynamoDBAttribute
-    private BusinessAddress businessAddress;
+    private Address businessAddress;
 
     @DynamoDBAttribute
     @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.SS)
