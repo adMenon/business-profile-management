@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,12 +37,14 @@ class ProductServiceImplTest {
     @Mock
     private RestTemplate restTemplate;
 
+    private ThreadPoolTaskExecutor executor = mock(ThreadPoolTaskExecutor.class);
+
     @Mock
     private ProductRepository productRepository;
 
     @BeforeEach
     void setup() {
-        productService = new ProductServiceImpl(restTemplate, productRepository);
+        productService = new ProductServiceImpl(restTemplate, productRepository, executor);
     }
 
     @Test

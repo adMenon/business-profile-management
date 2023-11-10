@@ -14,6 +14,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,8 +30,10 @@ import java.util.concurrent.CompletableFuture;
 public class ProductServiceImpl implements ProductService {
     private final RestTemplate restTemplate;
     private final ProductRepository productRepository;
+    private final ThreadPoolTaskExecutor executor;
 
     @Override
+
     public List<ValidateProfileUpdateResponse> validateProfileUpdate(BusinessProfile profileForUpdate,
                                                                      Set<String> productIds) {
 
@@ -43,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
                                         HttpStatus.NOT_FOUND);
                             }
                             return invokeValidateCall(product.getUrl(), profileForUpdate);
-                        }).exceptionallyAsync(ex -> {
+                        }, executor).exceptionallyAsync(ex -> {
                             log.error("Exception occurred while verifying", ex);
                             return ValidateProfileUpdateResponse.builder()
                                     .productId(productId)
