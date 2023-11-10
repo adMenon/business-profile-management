@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Set;
 
+import static com.intuitcraft.businessprofilemanagement.Util.getProductDummy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,6 +80,15 @@ class ProductServiceImplTest {
         doNothing().when(productRepository).delete(anyString());
         assertNotNull(productService.remove("product_id"));
         verify(productRepository, times(1)).delete(anyString());
+
+    }
+
+    @Test
+    void findAll() {
+        when(productRepository.findAll()).thenReturn(List.of(getProductDummy()));
+        List<ProductResponse> productResponses = productService.findAll();
+        assertNotNull(productResponses);
+        verify(productRepository, times(1)).findAll();
 
     }
 }

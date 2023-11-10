@@ -5,6 +5,7 @@ import com.intuitcraft.businessprofilemanagement.entities.Product;
 import com.intuitcraft.businessprofilemanagement.enums.TaxIdentifier;
 import com.intuitcraft.businessprofilemanagement.models.Address;
 import com.intuitcraft.businessprofilemanagement.models.AddressRequest;
+import com.intuitcraft.businessprofilemanagement.models.BusinessProfileResponse;
 import com.intuitcraft.businessprofilemanagement.models.CreateBusinessProfileRequest;
 import com.intuitcraft.businessprofilemanagement.models.UpdateBusinessProfileRequest;
 
@@ -60,6 +61,20 @@ public class Util {
 
     public static BusinessProfile getDummyBusinessProfile() {
         return BusinessProfile.builder()
+                .businessAddress(getAddressDummy())
+                .legalAddress(getAddressDummy())
+                .id("profile_id")
+                .email("email@abc.com")
+                .website("http://www.example.com")
+                .legalName("legalName")
+                .companyName("companyName")
+                .taxIdentifiers(Set.of(TaxIdentifier.EIN))
+                .subscribedProducts(new HashSet<>(Set.of("product_1")))
+                .build();
+    }
+
+    public static BusinessProfileResponse getDummyBusinessProfileResponse() {
+        return BusinessProfileResponse.builder()
                 .businessAddress(getAddressDummy())
                 .legalAddress(getAddressDummy())
                 .id("profile_id")

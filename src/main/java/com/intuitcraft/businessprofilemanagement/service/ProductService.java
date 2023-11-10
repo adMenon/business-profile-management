@@ -16,5 +16,5 @@ public interface ProductService {
 
     Boolean remove(String productId);
 
-    List<ProductResponse> getAll();
+    List<ProductResponse> findAll();
 }

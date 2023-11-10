@@ -4,12 +4,13 @@ import com.intuitcraft.businessprofilemanagement.controller.ProductController;
 import com.intuitcraft.businessprofilemanagement.models.AddProductRequest;
 import com.intuitcraft.businessprofilemanagement.models.GenericResponse;
 import com.intuitcraft.businessprofilemanagement.service.impl.ProductServiceImpl;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +29,6 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     public ResponseEntity<?> getAll() {
-        return GenericResponse.ok(productService.getAll());
+        return GenericResponse.ok(productService.findAll());
     }
 }

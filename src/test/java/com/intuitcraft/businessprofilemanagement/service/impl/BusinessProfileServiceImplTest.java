@@ -159,4 +159,13 @@ class BusinessProfileServiceImplTest {
 
 
     }
+
+
+    @Test
+    void findAll() {
+        when(businessProfileRepository.findAll()).thenReturn(List.of(getDummyBusinessProfile()));
+        List<BusinessProfileResponse> profiles = businessProfileService.findAll();
+        assertNotNull(profiles);
+        verify(businessProfileRepository, times(1)).findAll();
+    }
 }

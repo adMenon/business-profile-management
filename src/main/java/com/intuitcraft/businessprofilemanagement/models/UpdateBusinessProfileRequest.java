@@ -1,14 +1,14 @@
 package com.intuitcraft.businessprofilemanagement.models;
 
 import com.intuitcraft.businessprofilemanagement.enums.TaxIdentifier;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.Set;
 
 @Data

@@ -16,15 +16,15 @@ import java.util.Set;
 public class BusinessProfileMapper {
     public static BusinessProfileResponse mapToBusinessProfileResponse(BusinessProfile businessProfile) {
         return BusinessProfileResponse.builder()
-                .legalAddress(businessProfile.getLegalAddress().toString())
-                .businessAddress(businessProfile.getBusinessAddress().toString())
+                .legalAddress(businessProfile.getLegalAddress())
+                .businessAddress(businessProfile.getBusinessAddress())
                 .id(businessProfile.getId())
                 .website(businessProfile.getWebsite())
                 .legalName(businessProfile.getLegalName())
                 .companyName(businessProfile.getCompanyName())
                 .taxIdentifiers(businessProfile.getTaxIdentifiers())
                 .email(businessProfile.getEmail())
-                .subscribedBusiness(Optional.ofNullable(businessProfile.getSubscribedProducts())
+                .subscribedProducts(Optional.ofNullable(businessProfile.getSubscribedProducts())
                         .orElse(Set.of()))
                 .build();
     }

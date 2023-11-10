@@ -12,10 +12,10 @@ public class BusinessProfileResponse {
     private String id;
     private String legalName;
     private String companyName;
-    private String legalAddress;
-    private String businessAddress;
+    private Address legalAddress;
+    private Address businessAddress;
     private String email;
     private String website;
     private Set<TaxIdentifier> taxIdentifiers;
-    private Set<String> subscribedBusiness;
+    private Set<String> subscribedProducts;
 }
